@@ -105,7 +105,7 @@ try:
     run("sudo chsh -s /bin/zsh vimmoos")
     cmd = sp.check_output(
         "curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh".split()
-    )
+    ).decode("latin1")
     run("sh -c", f"'{cmd}'")
     run("yay -S --noconfirm zsh-theme-powerlevel10k-git")
 except Exception as e:
