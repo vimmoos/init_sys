@@ -1,10 +1,12 @@
 import subprocess as sp
 from dataclasses import dataclass, field
 
+USER = "vimmoos"
+HOME = f"/home/{USER}"
 
 FOLDERS = [
-    "/home/vimmoos/venvs",
-    "/home/vimmoos/downloads",
+    f"{HOME}/venvs",
+    f"{HOME}/downloads",
 ]
 UTILS = [
     "terminator",
@@ -15,13 +17,14 @@ UTILS = [
     # "mupdf",
 ]
 CONFIGS = {
-    "i3conf": "/home/vimmoos/.i3/config",
-    "xmod": "/home/vimmoos/.Xmodmap",
-    "terminator": "/home/vimmoos/.config/terminator/config",
-    "zsh": "/home/vimmoos/.zshrc",
-    "p10k": "/home/vimmoos/.p10k.zsh",
-    "emacs_config": "/home/vimmoos/emacs_config",
-    "init.el": "/home/vimmoos/init.el",
+    "i3conf": f"{HOME}/.i3/config",
+    "xmod": f"{HOME}/.Xmodmap",
+    "terminator": f"{HOME}/.config/terminator/config",
+    "zsh": f"{HOME}/.zshrc",
+    "p10k": f"{HOME}/.p10k.zsh",
+    "emacs_config": f"{HOME}/emacs_config",
+    "init.el": f"{HOME}/init.el",
+    "emacs": f"{HOME}/.emacs",
 }
 
 
@@ -74,8 +77,8 @@ class Colorcodes:
         return inner
 
 
-def run(string):
-    sp.Popen(string.split()).communicate()
+def run(string, *args):
+    sp.Popen(string.split() + args).communicate()
 
 
 c = Colorcodes()
@@ -101,7 +104,8 @@ c.info("Set up zsh")
 try:
     run("sudo chsh -s /bin/zsh vimmoos")
     run(
-        'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+        "sh -c ",
+        "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh )",
     )
     run("yay -S --noconfirm zsh-theme-powerlevel10k-git")
 except Exception as e:
@@ -112,7 +116,7 @@ c.complete("DONE with zsh")
 c.info("Copying all default configs")
 try:
     for k, v in CONFIGS.items():
-        run(f"cp -r /home/vimmoos/init_sys/{k} {v}")
+        run(f"cp -r {HOME}/init_sys/{k} {v}")
 except Exception as e:
     c.error(f"ERROR:\n{e}")
 c.complete("DONE with configs")
