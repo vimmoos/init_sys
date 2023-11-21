@@ -78,7 +78,7 @@ class Colorcodes:
 
 
 def run(string, *args):
-    sp.Popen(string.split() + args).communicate()
+    sp.Popen(string.split() + list(args)).communicate()
 
 
 c = Colorcodes()
