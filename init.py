@@ -105,7 +105,7 @@ try:
     run("sudo chsh -s /bin/zsh vimmoos")
     run(
         "sh -c ",
-        "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh )",
+        '"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
     )
     run("yay -S --noconfirm zsh-theme-powerlevel10k-git")
 except Exception as e:
