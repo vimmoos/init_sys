@@ -8,7 +8,7 @@ FOLDERS = [
 ]
 UTILS = [
     "terminator",
-    "R",
+    "r",
     "emacs",
     "firefox",
     "zsh",
