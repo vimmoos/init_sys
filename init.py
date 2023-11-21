@@ -84,22 +84,22 @@ def run(string, *args):
 
 c = Colorcodes()
 
-c.info("===========Starting Post installation===========")
-c.info("Creating default folders")
-try:
-    for v in FOLDERS:
-        run(f"mkdir {v}")
-except Exception as e:
-    c.error(f"ERROR:\n{e}")
+# c.info("===========Starting Post installation===========")
+# c.info("Creating default folders")
+# try:
+#     for v in FOLDERS:
+#         run(f"mkdir {v}")
+# except Exception as e:
+#     c.error(f"ERROR:\n{e}")
 
-c.complete("DONE creating folders")
+# c.complete("DONE creating folders")
 
-c.info("START installing utils")
-try:
-    run(f"sudo pacman -Syyu --noconfirm {' '.join(UTILS)}")
-except Exception as e:
-    c.error(f"ERROR:\n{e}")
-c.complete("DONE installing utils")
+# c.info("START installing utils")
+# try:
+#     run(f"sudo pacman -Syyu --noconfirm {' '.join(UTILS)}")
+# except Exception as e:
+#     c.error(f"ERROR:\n{e}")
+# c.complete("DONE installing utils")
 
 c.info("Set up zsh")
 try:
@@ -108,16 +108,19 @@ try:
         "curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh".split()
     ).decode("latin1")
     run("sh -c", f"'{cmd}'")
-    run("yay -S --noconfirm zsh-theme-powerlevel10k-git")
+    run(
+        "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+    )
+    # run("yay -S --noconfirm zsh-theme-powerlevel10k-git")
 except Exception as e:
     c.error(f"ERROR:\n{e}")
 
 c.complete("DONE with zsh")
 
-c.info("Copying all default configs")
-try:
-    for k, v in CONFIGS.items():
-        run(f"cp -r {HOME}/init_sys/{k} {v}")
-except Exception as e:
-    c.error(f"ERROR:\n{e}")
-c.complete("DONE with configs")
+# c.info("Copying all default configs")
+# try:
+#     for k, v in CONFIGS.items():
+#         run(f"cp -r {HOME}/init_sys/{k} {v}")
+# except Exception as e:
+#     c.error(f"ERROR:\n{e}")
+# c.complete("DONE with configs")
