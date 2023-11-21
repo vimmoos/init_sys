@@ -29,3 +29,7 @@ install some additional packages.
 + ~/.zshrc
 + ~/.Xmodmap
 + emacs
+
+** Improvements
+ error handleling
+ more user imput

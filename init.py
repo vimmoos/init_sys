@@ -16,7 +16,7 @@ RM_FOLDERS = [
     f"{HOME}/Music",
     f"{HOME}/Pictures",
     f"{HOME}/Public",
-    f"{HOME}/Templetes",
+    f"{HOME}/Templates",
     f"{HOME}/Videos",
 ]
 UTILS = [
