@@ -1,0 +1,31 @@
+* Personal Computer initialization
+I will assume you already a fresh and working majaro instance. If this
+is not the case and you are working with Arch maybe you need to
+install some additional packages.
+** Post Install
++ mkdir
+  + venvs
+  + downloads
+
++ install
+  + terminator
+  + R
+  + mupdf
+  + firefox
+  + discord, spotify
+  + zsh
+    set zsh as main shell
+    ~sudo chsh -s /bin/zsh vimmoos~
+    install ohmyzsh from [[https://ohmyz.sh/#install][oh-my-zsh]]
+    or using the following command:
+    ~sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"~
+
+    install p10k with
+    ~yay -S --noconfirm zsh-theme-powerlevel10k-git~
+
+
++ ~/.i3/config
++ ~/.config/terminator/config
++ ~/.zshrc
++ ~/.Xmodmap
++ emacs
