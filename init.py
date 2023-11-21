@@ -108,8 +108,9 @@ try:
         "curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh".split()
     ).decode("latin1")
     run("sh -c", f"'{cmd}'")
+    ZSH_CUSTOM = sp.check_output("echo $ZSH_CUSTOM".split()).decode("latin11")
     run(
-        "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+        f"git clone --depth=1 https://github.com/romkatv/powerlevel10k.git {HOME}/.oh-my-zsh/custom/themes/powerlevel10k"
     )
     # run("yay -S --noconfirm zsh-theme-powerlevel10k-git")
 except Exception as e:
