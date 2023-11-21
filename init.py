@@ -103,10 +103,10 @@ c.complete("DONE installing utils")
 c.info("Set up zsh")
 try:
     run("sudo chsh -s /bin/zsh vimmoos")
-    run(
-        "sh -c ",
-        '"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
+    cmd = sp.check_output(
+        "curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh".split()
     )
+    run("sh -c", f"'{cmd}'")
     run("yay -S --noconfirm zsh-theme-powerlevel10k-git")
 except Exception as e:
     c.error(f"ERROR:\n{e}")
