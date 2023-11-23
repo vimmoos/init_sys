@@ -137,3 +137,10 @@ try:
 except Exception as e:
     c.error(f"ERROR:\n{e}")
 c.complete("DONE with configs")
+
+c.info("Setting up emacs daemon")
+
+run("systemctl --user daemon-reload")
+run("systemctl --user enable emacs.service")
+run("systemctl --user start emacs.service")
+c.complete("DONE with emacs daemon")
