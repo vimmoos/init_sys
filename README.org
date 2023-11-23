@@ -33,4 +33,3 @@ install some additional packages.
 ** Improvements
  error handleling
  more user imput
- emacs daemon

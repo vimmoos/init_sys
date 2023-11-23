@@ -8,6 +8,7 @@ FOLDERS = [
     f"{HOME}/venvs",
     f"{HOME}/downloads",
     f"{HOME}/.config/terminator",
+    f"{HOME}/.config/systemd/user",
 ]
 RM_FOLDERS = [
     f"{HOME}/Desktop",
@@ -36,6 +37,7 @@ CONFIGS = {
     "emacs_config": f"{HOME}/emacs_config",
     "init.el": f"{HOME}/init.el",
     "emacs": f"{HOME}/.emacs",
+    "emacs.service": f"{HOME}/.config/systemd/user",
 }
 
 
@@ -123,7 +125,6 @@ try:
     run(
         f"git clone --depth=1 https://github.com/romkatv/powerlevel10k.git {HOME}/.oh-my-zsh/custom/themes/powerlevel10k"
     )
-    # run("yay -S --noconfirm zsh-theme-powerlevel10k-git")
 except Exception as e:
     c.error(f"ERROR:\n{e}")
 
