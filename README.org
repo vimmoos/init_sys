@@ -33,3 +33,5 @@ install some additional packages.
 ** Improvements
  error handleling
  more user imput
+ python setup + myenv script 
+ any potential other scripts
