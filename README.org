@@ -35,3 +35,4 @@ install some additional packages.
  more user imput
  python setup + myenv script 
  any potential other scripts
+ add sshkey gen set up
