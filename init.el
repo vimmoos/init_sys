@@ -220,13 +220,13 @@ buffer-file-name
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-(defun efs/org-mode-visual-fill ()
+(defun vimmoos/visual-fill ()
   (setq visual-fill-column-width 100
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
 (use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill))
+  :hook (org-mode . vimmoos/visual-fill))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -375,14 +375,20 @@ buffer-file-name
   :config (pyvenv-mode 1))
 
 (setenv "WORKON_HOME" "~/venvs/")
-;; (add-hook 'python-mode-hook
-;;           (lambda () (add-hook 'before-save-hook 'elpy-black-fix-code )))
 
+(defun vimmoos/ein-set-faces ()
+  (dolist (face '((ein:codecell-input-area-face . "#3c3836")
+                  (ein:codecell-input-prompt-face . "dark gray")
 
-;; ;;
-;; (bind-key (kbd "C-<escape>") #'vimmoos/py-auto-lsp python-mode-map)
-;; (require 'python_util)
-;; (bind-key (kbd "C-<return>") 'vimmoos/py-eval-closest-def python-mode-map)
+                  (ein:markdowncell-input-area-face . "#3c3836")
+                  (ein:markdowncell-input-prompt-face . "dark gray")
+                  (ein:cell-output-area . "black")))
+   (set-face-attribute (car face)  nil :background (cdr face))))
+
+(require 'ein)
+(require 'ein-notebook)
+(add-hook 'ein:notebook-mode-hook #'vimmoos/visual-fill)
+(add-hook 'ein:notebook-mode-hook #'vimmoos/ein-set-faces)
 
 (use-package ess
   :hook (ess-mode . lsp-deferred))
@@ -411,7 +417,7 @@ buffer-file-name
   (ansi-color-apply-on-region (point-min) (point-max))
   (toggle-read-only))
 
-(add-hook 'compilation-filter-hook 'colorize-compilation-buffer nil 'local)
+(add-hook 'compilation-filter-hook 'vimmoos/colorize-compilation-buffer nil 'local)
 
 (use-package workgroups2)
 
@@ -424,7 +430,7 @@ buffer-file-name
 (use-package general
   :config
   (general-create-definer vimmoos/leader-keys
-    :keymaps '(normal insert visual emacs)
+    :states '(normal insert visual emacs)
     :prefix "SPC"
     :global-prefix "C-SPC")
   )
@@ -432,6 +438,7 @@ buffer-file-name
 (vimmoos/leader-keys
   "t"   '(:ignore t :which-key "toggles")
   "d"   '(:ignore t :which-key "deleter")
+  "e"   '(:ignore t :which-key "ein mode")
   "f"   '(:ignore t :which-key "files")
   "w"   '(:ignore t :which-key "windows")
   "g"   '(:ignore t :which-key "magit")
@@ -483,6 +490,31 @@ buffer-file-name
   :infix "t"
   "t" '(counsel-load-theme :which-key "choose theme")
   "s" '(hydra-text-scale/body :which-key "scale text"))
+
+(unbind-key (kbd "<escape>") ein:notebook-mode-map)
+
+;; (unbind-key (kbd "C-<return>") ein:notebook-mode-map)
+(define-key ein:notebook-mode-map (kbd "C-<return>") (lambda ()
+                                                       (interactive)
+                                                       (ein:worksheet-execute-cell-km)
+                                                       (ein:worksheet-goto-next-input-km)))
+
+
+(vimmoos/leader-keys
+  :infix "e"
+  "o" '(ein:process-find-file-callback :which-key "open an ipynb file in ein")
+  "a" '(ein:worksheet-execute-all-cells :which-key "execute all cells")
+  "i" '(ein:worksheet-insert-cell-below-km :which-keys "insert cell below")
+  "p" '(ein:worksheet-insert-cell-above-km :which-keys "insert cell above")
+  "c" '(ein:worksheet-change-cell-type-km :which-keys "change cell type")
+  "k" '(ein:worksheet-kill-cell-km :which-keys "kill cell")
+  "s" '(ein:stop :which-keys "stop server")
+  "d" '(ein:notebook-close-km :which-keys "close notebook"))
+
+(vimmoos/leader-keys
+ :infix "f"
+ :keymaps 'ein:notebook-mode-map
+ "s" '(ein:notebook-save-notebook-command-km :which-key "save file"))
 
 ;; (define-key emacs-lisp-mode-map (kbd "<M-return>") 'eval-last-sexp)
 
