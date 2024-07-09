@@ -26,6 +26,7 @@ UTILS = [
     "emacs",
     "firefox",
     "zsh",
+    "python-pipx",
     # "mupdf",
 ]
 CONFIGS = {

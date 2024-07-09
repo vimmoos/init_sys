@@ -12,6 +12,8 @@ install some additional packages.
   + R
   + mupdf
   + firefox
+  + pipx
+    for managing global python commands in isolation
   + discord, spotify
   + zsh
     set zsh as main shell
@@ -33,6 +35,7 @@ install some additional packages.
 ** Improvements
  error handleling
  more user imput
- python setup + myenv script 
+ python setup + myenv script
+ poetry setup
  any potential other scripts
  add sshkey gen set up
