@@ -111,6 +111,25 @@ except Exception as e:
 
 c.complete("DONE creating folders")
 
+c.info("Update OS")
+try:
+    run("pacman-key --refresh-keys")
+except Exception as e:
+    c.error(f"ERROR:\n{e}")
+
+try:
+    run("sudo pacman -Syy archlinux-keyring")
+except Exception as e:
+    c.error(f"ERROR:\n{e}")
+
+try:
+    run("sudo pacman -Syyu")
+except Exception as e:
+    c.error(f"ERROR:\n{e}")
+
+c.complete("DONE Updated OS ")
+
+
 c.info("START installing utils")
 try:
     run(f"sudo pacman -Syyu --noconfirm {' '.join(UTILS)}")
