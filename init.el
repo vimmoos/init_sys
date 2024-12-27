@@ -129,6 +129,21 @@ buffer-file-name
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
+(defun set-exec-path-from-shell-PATH ()
+  "Set up Emacs' `exec-path' and PATH environment variable to match
+    that used by the user's shell.
+
+    This is particularly useful under Mac OS X and macOS, where GUI
+    apps are not started from a shell."
+  (interactive)
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$" "" (shell-command-to-string
+                                          "$SHELL --login -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(set-exec-path-from-shell-PATH)
+
 (use-package hydra)
 
 ;; Example of how to create a transient mode
@@ -251,8 +266,10 @@ buffer-file-name
 
 (use-package pdf-tools
   :hook (pdf-view-mode . pdf-view-midnight-minor-mode)
+  :magic ("%PDF" . pdf-view-mode)
   :config
   ;; (pdf-tools-install)
+  (pdf-tools-install)
   (setq-default pdf-view-display-size 'fit-width)
   (setq pdf-annot-activate-created-annotations t)
   (define-key pdf-view-mode-map (kbd "C-l") 'image-scroll-left)
@@ -273,6 +290,168 @@ buffer-file-name
   :config
   (add-hook 'pdf-view-mode-hook 'pdf-view-restore-mode)
   (setq pdf-view-restore-filename "~/.emacs.d/.pdf-view-restore"))
+
+(setenv "PATH" (concat "/usr/local/texlive/2024/bin/x86_64-linux" (getenv "PATH")))
+(setq exec-path (append exec-path '("/usr/local/texlive/2024/bin/x86_64-linux")))
+;; (defun vimmoos/TeX-command-save-buffer-and-run-all ()
+;;   "Save the buffer and run TeX-command-run-all"
+;;   (interactive)
+;;   (let (TeX-save-query) (TeX-save-document (TeX-master-file)))
+;;   (TeX-command-run-all nil))
+
+;; ;; copied ivy-bibtex and modified it to cite action
+;; (defun vimmoos/ivy-bibtex-cite (&optional arg local-bib)
+;;   "Search BibTeX entries using ivy.
+
+;;       With a prefix ARG the cache is invalidated and the bibliography
+;;       reread.
+
+;;       If LOCAL-BIB is non-nil, display that the BibTeX entries are read
+;;       from the local bibliography.  This is set internally by
+;;       `ivy-bibtex-with-local-bibliography'."
+;;   (interactive "P")
+;;   (when arg
+;;     (bibtex-completion-clear-cache))
+;;   (bibtex-completion-init)
+;;   (let* ((candidates (bibtex-completion-candidates))
+;;          (key (bibtex-completion-key-at-point))
+;;          (preselect (and key
+;;                          (cl-position-if (lambda (cand)
+;;                                            (member (cons "=key=" key)
+;;                                                    (cdr cand)))
+;;                                          candidates))))
+;;     (ivy-read (format "Insert citation %s: " (if local-bib " (local)" ""))
+;;               candidates
+;;               :preselect preselect
+;;               :caller 'ivy-bibtex
+;;               :history 'ivy-bibtex-history
+;;               :action 'ivy-bibtex-insert-citation)))
+
+;; (defun vimmoos/latex-mode-setup ()
+;;   (require 'company-reftex)
+;;   (turn-on-reftex)
+;;   (require 'company-auctex)
+;;   (require 'company-math)
+;;   (setq-local company-backends
+
+;;               (append '(
+;;                         (company-reftex-labels
+;;                          company-reftex-citations)
+;;                         (company-math-symbols-unicode company-math-symbols-latex company-latex-commands)
+;;                         (company-auctex-macros company-auctex-symbols company-auctex-environments)
+;;                         company-ispell
+;;                         )
+;;                       company-backends)))
+
+;; (use-package olivetti
+;;   :diminish
+;;   :hook (text-mode . olivetti-mode)
+;;   :config
+;;   (setq olivetti-body-width 100))
+
+;; (use-package outshine
+;;   :config
+;;   (setq LaTeX-section-list '(
+;;                              ("part" 0)
+;;                              ("chapter" 1)
+;;                              ("section" 2)
+;;                              ("subsection" 3)
+;;                              ("subsubsection" 4)
+;;                              ("paragraph" 5)
+;;                              ("subparagraph" 6)
+;;                              ("begin" 7)))
+
+;;   (add-hook 'LaTeX-mode-hook #'(lambda ()
+;;                                  (outshine-mode 1)
+;;                                  (setq outline-level #'LaTeX-outline-level)
+;;                                  (setq outline-regexp (LaTeX-outline-regexp t))
+;;                                  (setq outline-heading-alist
+;;                                        (mapcar (lambda (x)
+;;                                                  (cons (concat "\\" (nth 0 x)) (nth 1 x)))
+;;                                                LaTeX-section-list)))))
+
+
+;; (general-define-key
+;;  :states '(normal visual)
+;;  :keymaps 'LaTeX-mode-map
+;;  "TAB"  '(outshine-cycle :which-key "outshine-cycle"))
+
+;; ;; latexmk
+;; (use-package auctex-latexmk)
+;; ;; company
+;; (use-package company-math)
+;; (use-package company-auctex)
+;; (use-package company-reftex)
+
+
+;; ;;  use cdlatex
+;; (use-package cdlatex)
+
+;; ;; https://gist.github.com/saevarb/367d3266b3f302ecc896
+;; ;; https://piotr.is/2010/emacs-as-the-ultimate-latex-editor/
+
+;; (use-package latex
+;;   :straight auctex
+;;   :defer t
+;;   :custom
+;;   (olivetti-body-width 100)
+;;   (cdlatex-simplify-sub-super-scripts nil)
+;;   (reftex-default-bibliography
+;;    '("~/ref.bib"))
+;;   (bibtex-dialect 'biblatex)
+;;   :mode
+;;   ("\\.tex\\'" . latex-mode)
+;;   :bind (:map LaTeX-mode-map
+;;               ("C-c C-e" . cdlatex-environment)
+;;               )
+;;   :hook
+;;   (LaTeX-mode . olivetti-mode)
+;;   (LaTeX-mode . TeX-PDF-mode)
+;;   (LaTeX-mode . company-mode)
+;;   (LaTeX-mode . flyspell-mode)
+;;   (LaTeX-mode . flycheck-mode)
+;;   (LaTeX-mode . LaTeX-math-mode)
+;;   (LaTeX-mode . turn-on-reftex)
+;;   (LaTeX-mode . TeX-source-correlate-mode)
+;;   (LaTeX-mode . try/latex-mode-setup)
+;;   (LaTeX-mode . turn-on-cdlatex)
+
+;;   :config
+;;   (setq TeX-auto-save t)
+;;   (setq TeX-parse-self t)
+;;   (setq-default TeX-master nil)
+;;   (setq TeX-save-query nil)
+
+;;   (setq reftex-plug-into-AUCTeX t)
+
+;;   ;; pdftools
+;;   ;; https://emacs.stackexchange.com/questions/21755/use-pdfview-as-default-auctex-pdf-viewer#21764
+;;   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+;;         TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+;;         TeX-source-correlate-start-server t) ;; not sure if last line is neccessary
+;;   ;; to have the buffer refresh after compilation,
+;;   ;; very important so that PDFView refesh itself after comilation
+;;   (add-hook 'TeX-after-compilation-finished-functions
+;;             #'TeX-revert-document-buffer)
+
+;;   ;; latexmk
+;;   (require 'auctex-latexmk)
+;;   (auctex-latexmk-setup)
+;;   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+;;   )
+
+;; (use-package ivy-bibtex
+;;   :custom
+;;   (bibtex-completion-bibliography
+;;    '("~/ref.bib"))
+;;   (bibtex-completion-library-path '("~/papers"))
+;;   (bibtex-completion-cite-prompt-for-optional-arguments nil)
+;;   (bibtex-completion-cite-default-as-initial-input t)
+;;   )
+
+;; ;; (require 'tex)
+;; ;; (require 'latex)
+;; ;; (use-package auto-complete-auctex)
 
 ;; (use-package eaf
 ;;   :load-path "~/.emacs.d/site-lisp/emacs-application-framework")
@@ -374,7 +553,7 @@ buffer-file-name
   :after python-mode
   :config (pyvenv-mode 1))
 
-(setenv "WORKON_HOME" "~/venvs/")
+(setenv "WORKON_HOME" "~/poetry/virtualenvs/")
 
 (defun vimmoos/ein-set-faces ()
   (dolist (face '((ein:codecell-input-area-face . "#3c3836")
