@@ -1,5 +1,6 @@
 import subprocess as sp
 from dataclasses import dataclass, field
+import time
 
 USER = "vimmoos"
 HOME = f"/home/{USER}"
@@ -113,7 +114,7 @@ c.complete("DONE creating folders")
 
 c.info("Update OS")
 try:
-    run("pacman-key --refresh-keys")
+    run("sudo pacman-key --refresh-keys")
 except Exception as e:
     c.error(f"ERROR:\n{e}")
 
@@ -129,6 +130,7 @@ except Exception as e:
 
 c.complete("DONE Updated OS ")
 
+time.sleep(1)
 
 c.info("START installing utils")
 try:
