@@ -555,6 +555,10 @@ buffer-file-name
 
 (setenv "WORKON_HOME" "~/poetry/virtualenvs/")
 
+(use-package ein)
+
+(require 'ein-notebook)
+
 (defun vimmoos/ein-set-faces ()
   (dolist (face '((ein:codecell-input-area-face . "#3c3836")
                   (ein:codecell-input-prompt-face . "dark gray")
@@ -564,8 +568,6 @@ buffer-file-name
                   (ein:cell-output-area . "black")))
    (set-face-attribute (car face)  nil :background (cdr face))))
 
-(require 'ein)
-(require 'ein-notebook)
 (add-hook 'ein:notebook-mode-hook #'vimmoos/visual-fill)
 (add-hook 'ein:notebook-mode-hook #'vimmoos/ein-set-faces)
 

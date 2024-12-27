@@ -5,7 +5,8 @@ USER = "vimmoos"
 HOME = f"/home/{USER}"
 
 FOLDERS = [
-    f"{HOME}/venvs",
+    # f"{HOME}/venvs",
+    f"{HOME}/poetry",
     f"{HOME}/downloads",
     f"{HOME}/.config/terminator",
     f"{HOME}/.config/systemd/user",
@@ -27,6 +28,7 @@ UTILS = [
     "firefox",
     "zsh",
     "python-pipx",
+    "ttf-fira-code",
     # "mupdf",
 ]
 CONFIGS = {
@@ -35,10 +37,10 @@ CONFIGS = {
     "terminator": f"{HOME}/.config/terminator/config",
     "zsh": f"{HOME}/.zshrc",
     "p10k": f"{HOME}/.p10k.zsh",
-    "emacs_config": f"{HOME}/emacs_config",
+    # "emacs_config": f"{HOME}/emacs_config",
     "init.el": f"{HOME}/init.el",
     "emacs": f"{HOME}/.emacs",
-    "emacs.service": f"{HOME}/.config/systemd/user",
+    "emacs.service": f"{HOME}/.config/systemd/user/emacs.service",
 }
 
 
@@ -131,10 +133,10 @@ except Exception as e:
 
 c.complete("DONE with zsh")
 
-c.info("Copying all default configs")
+c.info("Create hard-link to configs")
 try:
     for k, v in CONFIGS.items():
-        run(f"cp -r {HOME}/init_sys/{k} {v}")
+        run(f"ln {HOME}/init_sys/{k} {v}")
 except Exception as e:
     c.error(f"ERROR:\n{e}")
 c.complete("DONE with configs")
@@ -145,3 +147,11 @@ run("systemctl --user daemon-reload")
 run("systemctl --user enable emacs.service")
 run("systemctl --user start emacs.service")
 c.complete("DONE with emacs daemon")
+
+c.info("Installing poetry")
+run("pipx install poetry")
+c.complete("DONE with poetry")
+
+c.info("Generate ssh keys")
+run("ssh-keygen")
+c.complete("DONE ssh keys")
