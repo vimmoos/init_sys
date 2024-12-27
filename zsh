@@ -146,11 +146,11 @@ zstyle ':completion:*' verbose yes
 export POETRY_CACHE_DIR=$HOME/poetry
 
 zstyle ':completion:*' menu select
-fpath+=~/.zfunc
+# fpath+=~/.zfunc
 
-for file in $HOME/.zfunc/*; do
-  source "$file"
-done
+# for file in $HOME/.zfunc/*; do
+#   source "$file"
+# done
 
 export GOPATH=$HOME/go
 export PATH=/usr/local/texlive/2024/bin/x86_64-linux:$PATH:$GOROOT/bin:$GOPATH/bin
