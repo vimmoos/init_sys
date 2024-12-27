@@ -174,3 +174,8 @@ c.complete("DONE with poetry")
 c.info("Generate ssh keys")
 run("ssh-keygen")
 c.complete("DONE ssh keys")
+
+
+c.info("Run emacs icons")
+run("emacs --eval '(all-the-icons-isntall-fonts t)'")
+c.complete("DONE Emacs icons")
