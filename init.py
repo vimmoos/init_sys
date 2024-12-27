@@ -191,3 +191,6 @@ try:
 except Exception as e:
     c.error(f"ERROR:\n{e}")
 c.complete("DONE Emacs ")
+
+
+run("i3exit logout")
