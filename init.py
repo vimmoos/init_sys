@@ -113,10 +113,10 @@ except Exception as e:
 c.complete("DONE creating folders")
 
 c.info("Update OS")
-try:
-    run("sudo pacman-key --refresh-keys")
-except Exception as e:
-    c.error(f"ERROR:\n{e}")
+# try:
+#     run("sudo pacman-key --refresh-keys")
+# except Exception as e:
+#     c.error(f"ERROR:\n{e}")
 
 try:
     run("sudo pacman -Syy archlinux-keyring")
