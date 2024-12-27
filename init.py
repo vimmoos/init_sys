@@ -157,6 +157,7 @@ c.complete("DONE with zsh")
 c.info("Create hard-link to configs")
 try:
     for k, v in CONFIGS.items():
+        run(f"rm {v}")
         run(f"ln {HOME}/init_sys/{k} {v}")
 except Exception as e:
     c.error(f"ERROR:\n{e}")
@@ -170,14 +171,23 @@ run("systemctl --user start emacs.service")
 c.complete("DONE with emacs daemon")
 
 c.info("Installing poetry")
-run("pipx install poetry")
+try:
+    run("pipx install poetry")
+except Exception as e:
+    c.error(f"ERROR:\n{e}")
 c.complete("DONE with poetry")
 
 c.info("Generate ssh keys")
-run("ssh-keygen")
+try:
+    run("ssh-keygen")
+except Exception as e:
+    c.error(f"ERROR:\n{e}")
 c.complete("DONE ssh keys")
 
 
-c.info("Run emacs icons")
-run("emacs --eval '(all-the-icons-isntall-fonts t)'")
-c.complete("DONE Emacs icons")
+c.info("Run emacs")
+try:
+    run("emacs --eval '(all-the-icons-isntall-fonts t)'")
+except Exception as e:
+    c.error(f"ERROR:\n{e}")
+c.complete("DONE Emacs ")
