@@ -4,17 +4,19 @@ is not the case and you are working with Arch maybe you need to
 install some additional packages.
 ** Post Install
 + mkdir
-  + venvs
   + downloads
+  + poetry
+  + .config/terminator
+  + .config/systemd/user
 
 + install
   + terminator
-  + R
-  + mupdf
+  + r
+  + emacs
   + firefox
-  + pipx
+  + python-pipx
     for managing global python commands in isolation
-  + discord, spotify
+  + ttf-fira-code
   + zsh
     set zsh as main shell
     ~sudo chsh -s /bin/zsh vimmoos~
@@ -25,17 +27,20 @@ install some additional packages.
     install p10k with
     ~yay -S --noconfirm zsh-theme-powerlevel10k-git~
 
++ configs
+  + .i3/config
+  + .Xmodmap
+  + .config/terminator/config
+  + .zshrc
+  + .p10k.zsh
+  + init.el
+  + .emacs
+  + .config/systemd/user/emacs.service
 
-+ ~/.i3/config
-+ ~/.config/terminator/config
-+ ~/.zshrc
-+ ~/.Xmodmap
-+ emacs
 
 ** Improvements
  error handleling
+
  more user imput
- python setup + myenv script
- poetry setup
+
  any potential other scripts
- add sshkey gen set up
